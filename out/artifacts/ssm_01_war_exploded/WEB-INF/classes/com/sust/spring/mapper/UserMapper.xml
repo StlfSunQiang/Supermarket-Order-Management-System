@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sust.spring.mapper.UserMapper">
+<resultMap type="com.sust.spring.domain.User" id="userMap">
+    <id column="id" property="id"></id>
+    <result property="userCode" column="userCode"></result>
+    <result property="userName" column="userName"></result>
+    <result property="userPassword" column="userPassword"></result>
+</resultMap>
+    <select id="getUserByName" parameterType="String"  resultType="user">
+        SELECT id, userCode, userName, userPassword FROM smbms_user  WHERE  userCode = #{userCode}
+    </select>
+    <select id="findAllUser" resultType="User">
+        SELECT * FROM smbms_user
+    </select>
+    <select id="getUserById" parameterType="int" resultType="User">
+        select *,roleName as userRoleName from smbms_user,smbms_role where smbms_user.id = #{id} and smbms_user.userRole = smbms_role.id
+    </select>
+    <select id="getUserList" resultType="User">
+        SELECT * FROM smbms_user WHERE userName = #{userName} AND userRole = #{userRole}
+    </select>
+
+    <select id="ucexist" parameterType="String" resultType="user">
+        select * from smbms_user where userCode = #{userCode}
+    </select>
+
+    <insert id="addUser" parameterType="User">
+        insert into smbms_user(userCode,userName,userPassword,gender,birthday,phone,address,userRole)
+        values (#{userCode},#{userName},#{userPassword},#{gender},#{birthday},#{phone},#{address},#{userRole})
+    </insert>
+
+    <!--<resultMap id="UserResultMap" type="com.sust.spring.domain.User">-->
+        <!--<id property="id" column="id"/>-->
+        <!--<result column="userName" property="userName"/>-->
+        <!--<result column="gender" property="gender"/>-->
+        <!--<result column="birthday" property="birthday"/>-->
+        <!--<result column="phone" property="phone"/>-->
+        <!--<result column="address" property="address"/>-->
+        <!--<result column="userRole" property="userRole"/>-->
+    <!--</resultMap>-->
+
+    <update id="doUserModify" parameterType="User">
+        update smbms_user
+        set userName= #{userName},gender=#{gender},birthday=#{birthday},phone=#{phone},address=#{address},userRole=#{userRole}
+        where id = #{id}
+    </update>
+
+    <update id="doPwdModify" parameterType="map">
+        update smbms_user
+        set userPassword = #{newPassword}
+        where id = #{id}
+    </update>
+    <delete id="delUserById" parameterType="int">
+        delete from smbms_user where id = #{id}
+    </delete>
+
+</mapper>

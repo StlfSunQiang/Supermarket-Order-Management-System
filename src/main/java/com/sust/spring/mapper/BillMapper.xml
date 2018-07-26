@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sust.spring.mapper.BillMapper">
+    <select id="findAllBill" resultType="Bill">
+        select *,proName as providerName FROM smbms_bill,smbms_provider WHERE smbms_bill.providerId = smbms_provider.id
+    </select>
+    <select id="getBillById" parameterType="int" resultType="Bill">
+        select *,proName as providerName from smbms_bill,smbms_provider WHERE smbms_bill.id = #{id} AND smbms_bill.providerId = smbms_provider.id
+    </select>
+    <select id="getBillList" resultType="Bill">
+        SELECT * FROM smbms_bill WHERE productName = #{productName} AND providerId = #{providerId} AND isPayment = #{isPayment}
+    </select>
+
+    <insert id="doBillAdd" parameterType="Bill">
+        insert into smbms_bill(billCode,productName,productUnit,productCount,totalPrice,providerId,isPayment)
+        values (#{billCode},#{productName},#{productUnit},#{productCount},#{totalPrice},#{providerId},#{isPayment})
+    </insert>
+    <update id="doBillModify" parameterType="Bill">
+        update smbms_bill
+        set productName=#{productName},productUnit=#{productUnit},
+        productCount=#{productCount},totalPrice=#{totalPrice},isPayment=#{isPayment},providerId=#{providerId}
+        where billCode = #{billCode}
+    </update>
+    <delete id="delBillById" parameterType="int">
+        delete from smbms_bill where id = #{id}
+    </delete>
+</mapper>

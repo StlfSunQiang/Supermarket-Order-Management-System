@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sust.spring.mapper.ProviderMapper">
+
+
+    <select id="findAllProvider" resultType="Provider">
+        SELECT * FROM smbms_provider
+    </select>
+    <select id="getProviderList" resultType="Provider">
+        SELECT * FROM smbms_provider WHERE proName LIKE '%${proName}%' AND proCode LIKE '%${proCode}%';
+    </select>
+    <select id="getProviderById" parameterType="int" resultType="Provider">
+        SELECT * FROM smbms_provider WHERE id = #{id};
+    </select>
+
+    <insert id="doProviderAdd" parameterType="Provider">
+        insert into smbms_provider(proCode,proName,proContact,proPhone,proAddress,proFax,proDesc)
+        values (#{proCode},#{proName},#{proContact},#{proPhone},#{proAddress},#{proFax},#{proDesc})
+    </insert>
+
+    <update id="doProviderModify" parameterType="Provider">
+        update smbms_provider
+        set proName=#{proName},proContact=#{proContact},proPhone=#{proPhone},proAddress=#{proAddress},proFax=#{proFax},proDesc=#{proDesc}
+        where proCode=#{proCode}
+    </update>
+
+    <delete id="delProviderById" parameterType="int">
+        delete from smbms_provider from id = #{id}
+    </delete>
+
+</mapper>
